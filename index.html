@@ -5,22 +5,33 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="theme-color" content="#080b14">
-  <meta name="description" content="NAYVRA is a contact-center dialer platform in active development, built around campaign operations, live monitoring, and reporting.">
+  <meta name="description" content="NAYVRA is an independently developed contact-center dialer platform focused on campaign operations, live performance monitoring, reporting, and operational visibility.">
+
   <title>NAYVRA — Contact Center Operations</title>
+
   <style>
     :root {
       color-scheme: dark;
       --bg: #080b14;
       --panel: #101625;
+      --panel-light: #151e30;
       --text: #f4f7ff;
       --muted: #a2aec5;
       --accent: #77f2c1;
       --blue: #8aa8ff;
       --border: rgba(255,255,255,.11);
+      --max-width: 1200px;
     }
 
-    * { box-sizing: border-box; }
-    html { scroll-behavior: smooth; }
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+      scroll-padding-top: 90px;
+    }
+
     body {
       margin: 0;
       background:
@@ -28,267 +39,781 @@
         radial-gradient(ellipse at 10% 35%, rgba(39,201,153,.08), transparent 35%),
         var(--bg);
       color: var(--text);
-      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-      line-height: 1.6;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system,
+        BlinkMacSystemFont, "Segoe UI", sans-serif;
+      line-height: 1.65;
+      -webkit-font-smoothing: antialiased;
     }
 
-    a { color: inherit; text-decoration: none; }
-    .container { width: min(1120px, calc(100% - 40px)); margin: auto; }
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
 
-    header {
+    a:focus-visible {
+      outline: 2px solid var(--accent);
+      outline-offset: 5px;
+    }
+
+    button, a {
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    .container {
+      width: min(var(--max-width), calc(100% - 48px));
+      margin-inline: auto;
+    }
+
+    .site-header {
+      position: sticky;
+      top: 0;
+      z-index: 20;
+      background: rgba(8,11,20,.88);
       border-bottom: 1px solid var(--border);
-      background: rgba(8,11,20,.8);
+      backdrop-filter: blur(18px);
     }
 
-    nav {
-      min-height: 78px;
+    .nav {
+      min-height: 82px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 28px;
+    }
+
+    .brand {
+      display: inline-flex;
+      align-items: center;
+      gap: 13px;
+      font-size: 23px;
+      font-weight: 850;
+      letter-spacing: 2px;
+      white-space: nowrap;
+    }
+
+    .brand-mark {
+      width: 46px;
+      height: 46px;
+      display: grid;
+      place-items: center;
+      border-radius: 15px;
+      color: #07111b;
+      font-size: 23px;
+      font-weight: 900;
+      letter-spacing: 0;
+      background: linear-gradient(135deg, var(--accent), var(--blue));
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 32px;
+    }
+
+    .nav-links a {
+      color: var(--muted);
+      font-size: 14px;
+      transition: color .2s ease;
+    }
+
+    .nav-links a:hover {
+      color: var(--accent);
+    }
+
+    .button {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 49px;
+      padding: 12px 21px;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      font-size: 14px;
+      font-weight: 750;
+      transition: transform .2s ease, border-color .2s ease,
+        background .2s ease;
+    }
+
+    .button:hover {
+      transform: translateY(-2px);
+      border-color: rgba(119,242,193,.55);
+    }
+
+    .button-primary {
+      color: #06130f;
+      background: var(--accent);
+      border-color: transparent;
+    }
+
+    .button-primary:hover {
+      background: #a0f8d5;
+    }
+
+    .button-secondary {
+      background: rgba(255,255,255,.025);
+    }
+
+    .hero {
+      padding: 108px 0 82px;
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 11px;
+      color: var(--accent);
+      font-size: 12px;
+      font-weight: 850;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+    }
+
+    .eyebrow::before {
+      content: "";
+      width: 9px;
+      height: 9px;
+      border-radius: 50%;
+      background: var(--accent);
+      box-shadow: 0 0 18px rgba(119,242,193,.5);
+    }
+
+    h1, h2, h3, p {
+      margin-top: 0;
+    }
+
+    h1 {
+      max-width: 950px;
+      margin: 26px 0 23px;
+      font-size: clamp(43px, 6.1vw, 78px);
+      font-weight: 850;
+      line-height: 1.1;
+      letter-spacing: -4px;
+    }
+
+    .gradient-text {
+      color: var(--accent);
+      background: linear-gradient(100deg, var(--accent), var(--blue));
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .hero-description {
+      max-width: 720px;
+      color: var(--muted);
+      font-size: 18px;
+      line-height: 1.85;
+    }
+
+    .hero-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 13px;
+      margin-top: 30px;
+    }
+
+    .notice {
+      margin-top: 24px;
+      color: #8595b4;
+      font-size: 12px;
+    }
+
+    .preview {
+      margin-top: 72px;
+      padding: 24px;
+      overflow: hidden;
+      border: 1px solid var(--border);
+      border-radius: 23px;
+      background: linear-gradient(145deg, #151f33, #0d1220);
+      box-shadow: 0 30px 90px rgba(0,0,0,.18);
+    }
+
+    .preview-top {
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      padding-bottom: 22px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .window-dot {
+      width: 9px;
+      height: 9px;
+      border-radius: 50%;
+      background: #53617c;
+    }
+
+    .preview-label {
+      margin-left: auto;
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    .preview-content {
+      display: grid;
+      grid-template-columns: 1.2fr .8fr;
+      gap: 24px;
+      padding-top: 26px;
+    }
+
+    .preview-panel {
+      padding: 23px;
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      background: rgba(255,255,255,.025);
+    }
+
+    .small-label {
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    .preview-heading {
+      margin: 7px 0 20px;
+      font-size: 20px;
+      font-weight: 750;
+    }
+
+    .activity-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 14px;
+      padding: 13px 0;
+      border-top: 1px solid var(--border);
+      font-size: 13px;
+    }
+
+    .activity-row span:first-child {
+      color: var(--muted);
+    }
+
+    .concept-tag {
+      color: var(--accent);
+      font-size: 11px;
+      font-weight: 750;
+    }
+
+    .section {
+      padding: 86px 0;
+      border-top: 1px solid var(--border);
+    }
+
+    .section-heading {
+      max-width: 760px;
+      margin-bottom: 38px;
+    }
+
+    .section-heading h2 {
+      margin: 16px 0;
+      font-size: clamp(30px, 4vw, 48px);
+      font-weight: 800;
+      letter-spacing: -1.8px;
+      line-height: 1.2;
+    }
+
+    .section-heading p {
+      color: var(--muted);
+      font-size: 16px;
+    }
+
+    .feature-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 18px;
+    }
+
+    .feature-card {
+      min-height: 218px;
+      padding: 25px;
+      border: 1px solid var(--border);
+      border-radius: 17px;
+      background: linear-gradient(145deg, rgba(255,255,255,.045), rgba(255,255,255,.012));
+      transition: transform .2s ease, border-color .2s ease;
+    }
+
+    .feature-card:hover {
+      transform: translateY(-4px);
+      border-color: rgba(119,242,193,.4);
+    }
+
+    .feature-icon {
+      width: 43px;
+      height: 43px;
+      display: grid;
+      place-items: center;
+      margin-bottom: 19px;
+      border: 1px solid rgba(119,242,193,.2);
+      border-radius: 13px;
+      background: rgba(119,242,193,.08);
+      color: var(--accent);
+      font-size: 20px;
+    }
+
+    .feature-card h3 {
+      margin-bottom: 10px;
+      font-size: 17px;
+    }
+
+    .feature-card p {
+      margin-bottom: 0;
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    .approach-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 18px;
+    }
+
+    .approach-card {
+      padding: 27px;
+      border: 1px solid var(--border);
+      border-radius: 17px;
+      background: rgba(255,255,255,.025);
+    }
+
+    .approach-card h3 {
+      margin-bottom: 10px;
+      font-size: 18px;
+    }
+
+    .approach-card p {
+      margin-bottom: 0;
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    .contact-panel {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 32px;
+      padding: 38px;
+      border: 1px solid rgba(119,242,193,.22);
+      border-radius: 22px;
+      background:
+        radial-gradient(ellipse at 100% 0%, rgba(119,242,193,.10), transparent 55%),
+        var(--panel);
+    }
+
+    .contact-panel h2 {
+      margin: 13px 0;
+      font-size: clamp(28px, 4vw, 40px);
+      letter-spacing: -1px;
+    }
+
+    .contact-panel p {
+      max-width: 590px;
+      margin-bottom: 0;
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    .site-footer {
+      padding: 27px 0;
+      border-top: 1px solid var(--border);
+    }
+
+    .footer-inner {
       display: flex;
       align-items: center;
       justify-content: space-between;
       gap: 20px;
     }
 
-    .brand { display: flex; align-items: center; gap: 12px; }
-    .logo {
-      display: grid;
-      place-items: center;
-      width: 42px;
-      height: 42px;
-      border-radius: 13px;
-      color: #08120f;
-      font-weight: 900;
-      font-size: 21px;
-      background: linear-gradient(135deg, var(--accent), var(--blue));
-      box-shadow: 0 0 30px rgba(119,242,193,.13);
-    }
-
-    .brand-name { font-size: 21px; font-weight: 850; letter-spacing: 2px; }
-    .nav-links { display: flex; gap: 28px; color: var(--muted); font-size: 14px; }
-    .nav-links a:hover, .text-link:hover { color: var(--accent); }
-
-    .button {
-      display: inline-flex;
-      justify-content: center;
-      align-items: center;
-      padding: 12px 19px;
-      border: 1px solid var(--border);
-      border-radius: 10px;
-      font-size: 14px;
-      font-weight: 700;
-      transition: transform .2s, border-color .2s;
-    }
-
-    .button:hover { transform: translateY(-2px); border-color: var(--accent); }
-    .button-primary { background: var(--accent); color: #07140f; border-color: var(--accent); }
-
-    .hero { padding: 100px 0 80px; }
-    .eyebrow {
-      display: inline-flex;
-      align-items: center;
-      gap: 9px;
-      color: var(--accent);
-      font-size: 12px;
+    .footer-brand {
       font-weight: 800;
-      text-transform: uppercase;
-      letter-spacing: 2px;
+      letter-spacing: 1.5px;
     }
 
-    .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--accent); }
-    h1 { max-width: 850px; margin: 23px 0; font-size: clamp(44px, 7vw, 76px); line-height: 1.06; letter-spacing: -3px; }
-    .gradient-text { background: linear-gradient(90deg, var(--accent), var(--blue)); -webkit-background-clip: text; background-clip: text; color: transparent; }
-    .hero-copy { max-width: 670px; color: var(--muted); font-size: 18px; }
-    .hero-actions { display: flex; gap: 13px; flex-wrap: wrap; margin-top: 30px; }
-    .note { margin-top: 19px; color: #8491aa; font-size: 12px; }
-
-    .preview {
-      margin-top: 65px;
-      padding: 22px;
-      border: 1px solid rgba(255,255,255,.14);
-      border-radius: 18px;
-      background: linear-gradient(145deg, rgba(23,33,54,.96), rgba(12,17,29,.96));
-      box-shadow: 0 30px 90px rgba(0,0,0,.24);
+    .footer-copy {
+      color: var(--muted);
+      font-size: 12px;
     }
 
-    .preview-top { display: flex; justify-content: space-between; align-items: center; gap: 12px; padding-bottom: 18px; border-bottom: 1px solid var(--border); }
-    .window-dots { display: flex; gap: 6px; }
-    .window-dots span { width: 8px; height: 8px; border-radius: 50%; background: #66728b; }
-    .preview-label { color: var(--muted); font-size: 12px; }
-    .preview-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 14px; margin-top: 20px; }
-    .metric { padding: 19px; border: 1px solid var(--border); border-radius: 12px; background: rgba(255,255,255,.025); }
-    .metric-label { color: var(--muted); font-size: 12px; }
-    .metric-value { margin-top: 8px; font-size: 23px; font-weight: 800; }
-    .metric-caption { color: #8d9ab3; font-size: 11px; margin-top: 5px; }
+    @media (max-width: 800px) {
+      .nav {
+        min-height: 72px;
+        flex-wrap: wrap;
+        gap: 15px;
+        padding: 12px 0;
+      }
 
-    section.content-section { padding: 75px 0; }
-    .section-heading { max-width: 680px; margin-bottom: 35px; }
-    h2 { margin: 12px 0; font-size: clamp(30px,4vw,44px); line-height: 1.15; letter-spacing: -1.3px; }
-    .section-copy { color: var(--muted); }
-    .features { display: grid; grid-template-columns: repeat(3,1fr); gap: 17px; }
-    .feature { padding: 25px; border: 1px solid var(--border); border-radius: 15px; background: rgba(255,255,255,.025); }
-    .feature-icon { display: grid; place-items: center; width: 43px; height: 43px; border-radius: 12px; background: rgba(119,242,193,.09); font-size: 21px; }
-    h3 { margin: 19px 0 8px; font-size: 18px; }
-    .feature p { margin: 0; color: var(--muted); font-size: 14px; }
+      .brand {
+        font-size: 19px;
+      }
 
-    .statement {
-      padding: 38px;
-      border: 1px solid rgba(119,242,193,.2);
-      border-radius: 18px;
-      background: linear-gradient(120deg, rgba(119,242,193,.07), rgba(138,168,255,.06));
+      .brand-mark {
+        width: 39px;
+        height: 39px;
+      }
+
+      .nav-links {
+        order: 3;
+        width: 100%;
+        justify-content: flex-start;
+        gap: 23px;
+        overflow-x: auto;
+        padding-bottom: 4px;
+      }
+
+      .nav-links a {
+        white-space: nowrap;
+      }
+
+      .nav-contact {
+        margin-left: auto;
+      }
+
+      .hero {
+        padding: 72px 0 55px;
+      }
+
+      h1 {
+        letter-spacing: -2px;
+      }
+
+      .preview-content,
+      .approach-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .feature-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      .section {
+        padding: 65px 0;
+      }
+
+      .contact-panel {
+        align-items: flex-start;
+        flex-direction: column;
+        padding: 27px;
+      }
     }
 
-    .statement p { color: var(--muted); max-width: 760px; margin-bottom: 0; }
-    .contact-panel { padding: 32px; border: 1px solid var(--border); border-radius: 17px; background: var(--panel); }
-    .contact-panel p { color: var(--muted); }
-    .text-link { color: var(--accent); text-decoration: underline; text-underline-offset: 4px; overflow-wrap: anywhere; }
+    @media (max-width: 520px) {
+      .container {
+        width: calc(100% - 32px);
+      }
 
-    footer { margin-top: 30px; border-top: 1px solid var(--border); padding: 28px 0; color: #8793aa; font-size: 12px; }
-    .footer-inner { display: flex; justify-content: space-between; gap: 18px; flex-wrap: wrap; }
+      .hero {
+        padding-top: 57px;
+      }
 
-    @media (max-width: 760px) {
-      .nav-links { display: none; }
-      .hero { padding-top: 70px; }
-      h1 { letter-spacing: -1.8px; }
-      .preview-grid, .features { grid-template-columns: 1fr; }
-      .preview { padding: 14px; }
-      .statement, .contact-panel { padding: 24px; }
+      .eyebrow {
+        font-size: 10px;
+        letter-spacing: 1.5px;
+      }
+
+      h1 {
+        font-size: clamp(39px, 11vw, 55px);
+        letter-spacing: -1.8px;
+      }
+
+      .hero-description {
+        font-size: 16px;
+      }
+
+      .hero-actions .button {
+        width: 100%;
+      }
+
+      .preview {
+        margin-top: 44px;
+        padding: 13px;
+        border-radius: 16px;
+      }
+
+      .preview-panel {
+        padding: 16px;
+      }
+
+      .preview-label {
+        font-size: 10px;
+      }
+
+      .feature-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .feature-card {
+        min-height: auto;
+      }
+
+      .section-heading h2 {
+        letter-spacing: -1px;
+      }
+
+      .footer-inner {
+        align-items: flex-start;
+        flex-direction: column;
+      }
     }
 
     @media (prefers-reduced-motion: reduce) {
-      html { scroll-behavior: auto; }
-      *, *::before, *::after { transition: none !important; }
+      html {
+        scroll-behavior: auto;
+      }
+
+      *, *::before, *::after {
+        transition-duration: .01ms !important;
+      }
     }
   </style>
 </head>
+
 <body>
-  <header>
-    <nav class="container">
-      <a class="brand" href="#" aria-label="NAYVRA home">
-        <span class="logo">N</span>
-        <span class="brand-name">NAYVRA</span>
+  <header class="site-header">
+    <nav class="nav container" aria-label="Main navigation">
+      <a class="brand" href="#home" aria-label="NAYVRA home">
+        <span class="brand-mark" aria-hidden="true">N</span>
+        <span>NAYVRA</span>
       </a>
+
       <div class="nav-links">
         <a href="#platform">Platform</a>
         <a href="#capabilities">Capabilities</a>
         <a href="#approach">Our approach</a>
       </div>
-      <a class="button" href="#contact">Contact</a>
+
+      <a class="button button-secondary nav-contact" href="#contact">
+        Contact
+      </a>
     </nav>
   </header>
 
   <main>
-    <section class="hero container" id="platform">
-      <div class="eyebrow"><span class="dot"></span> Contact-center technology in development</div>
-      <h1>Run your contact center with <span class="gradient-text">greater clarity.</span></h1>
-      <p class="hero-copy">
-        NAYVRA is an independently developed dialer platform focused on campaign
-        operations, live performance visibility, and practical reporting—all in
-        one evolving workspace.
-      </p>
-      <div class="hero-actions">
-        <a class="button button-primary" href="#capabilities">Explore the platform</a>
-        <a class="button" href="#contact">Get in touch</a>
-      </div>
-      <p class="note">Currently in active development and testing. Features and availability may change.</p>
+    <section class="hero container" id="home">
+      <span class="eyebrow">Contact-center technology in development</span>
 
-      <div class="preview" aria-label="Illustrative dashboard preview">
+      <h1>
+        Run your contact center<br>
+        with <span class="gradient-text">greater clarity.</span>
+      </h1>
+
+      <p class="hero-description">
+        NAYVRA is an independently developed dialer platform focused on
+        campaign operations, live performance visibility, and practical
+        reporting — all in one evolving workspace.
+      </p>
+
+      <div class="hero-actions">
+        <a class="button button-primary" href="#platform">
+          Explore the platform
+        </a>
+        <a class="button button-secondary" href="#contact">
+          Get in touch
+        </a>
+      </div>
+
+      <p class="notice">
+        Currently in active development and testing. Features and availability may change.
+      </p>
+
+      <div class="preview" id="platform">
         <div class="preview-top">
-          <div class="window-dots"><span></span><span></span><span></span></div>
+          <span class="window-dot"></span>
+          <span class="window-dot"></span>
+          <span class="window-dot"></span>
           <span class="preview-label">NAYVRA / Operations overview concept</span>
         </div>
-        <div class="preview-grid">
-          <div class="metric">
-            <div class="metric-label">Campaign operations</div>
-            <div class="metric-value">Organized</div>
-            <div class="metric-caption">Designed for operational visibility</div>
+
+        <div class="preview-content">
+          <div class="preview-panel">
+            <span class="small-label">PLATFORM OVERVIEW</span>
+            <h2 class="preview-heading">Operational visibility</h2>
+
+            <div class="activity-row">
+              <span>Campaign operations</span>
+              <span class="concept-tag">In development</span>
+            </div>
+
+            <div class="activity-row">
+              <span>Live performance monitoring</span>
+              <span class="concept-tag">In development</span>
+            </div>
+
+            <div class="activity-row">
+              <span>Reporting and reconciliation</span>
+              <span class="concept-tag">In development</span>
+            </div>
           </div>
-          <div class="metric">
-            <div class="metric-label">Live monitoring</div>
-            <div class="metric-value">In focus</div>
-            <div class="metric-caption">A core product priority</div>
-          </div>
-          <div class="metric">
-            <div class="metric-label">Reporting</div>
-            <div class="metric-value">Actionable</div>
-            <div class="metric-caption">Built around clear performance data</div>
+
+          <div class="preview-panel">
+            <span class="small-label">DESIGN PRINCIPLE</span>
+            <h2 class="preview-heading">Useful information. Clear decisions.</h2>
+            <p class="small-label">
+              A product direction centered on helping operations teams
+              understand activity, evaluate performance, and work with
+              more reliable information.
+            </p>
           </div>
         </div>
       </div>
     </section>
 
-    <section class="content-section container" id="capabilities">
-      <div class="section-heading">
-        <div class="eyebrow">Platform direction</div>
-        <h2>Built around the work that matters.</h2>
-        <p class="section-copy">NAYVRA is being developed with a practical focus on the everyday needs of contact-center teams and administrators.</p>
-      </div>
-      <div class="features">
-        <article class="feature">
-          <div class="feature-icon" aria-hidden="true">◈</div>
-          <h3>Campaign operations</h3>
-          <p>Aiming to make campaign setup, queue workflows, and dialer operations easier to manage.</p>
-        </article>
-        <article class="feature">
-          <div class="feature-icon" aria-hidden="true">⌁</div>
-          <h3>Live performance visibility</h3>
-          <p>Live monitoring is a core design priority, helping operators understand activity and performance.</p>
-        </article>
-        <article class="feature">
-          <div class="feature-icon" aria-hidden="true">▤</div>
-          <h3>Operational reporting</h3>
-          <p>Designed around useful metrics, consistent reporting, and clearer operational decisions.</p>
-        </article>
-        <article class="feature">
-          <div class="feature-icon" aria-hidden="true">◎</div>
-          <h3>Provider-aware architecture</h3>
-          <p>Developing toward a flexible architecture that can accommodate telephony integrations.</p>
-        </article>
-        <article class="feature">
-          <div class="feature-icon" aria-hidden="true">⛨</div>
-          <h3>Reliability-minded engineering</h3>
-          <p>Testing and iteration are part of the process, with reliability and operational safety in mind.</p>
-        </article>
-        <article class="feature">
-          <div class="feature-icon" aria-hidden="true">↗</div>
-          <h3>Continuous improvement</h3>
-          <p>An evolving product shaped by real operational workflows and practical requirements.</p>
-        </article>
+    <section class="section" id="capabilities">
+      <div class="container">
+        <div class="section-heading">
+          <span class="eyebrow">Platform capabilities</span>
+          <h2>Built around the work that matters.</h2>
+          <p>
+            NAYVRA's product direction brings operational workflows,
+            performance visibility, and reporting into focus.
+          </p>
+        </div>
+
+        <div class="feature-grid">
+          <article class="feature-card">
+            <div class="feature-icon" aria-hidden="true">↗</div>
+            <h3>Campaign operations</h3>
+            <p>
+              A focused approach to campaign workflows, configuration,
+              and day-to-day contact-center operations.
+            </p>
+          </article>
+
+          <article class="feature-card">
+            <div class="feature-icon" aria-hidden="true">◉</div>
+            <h3>Live monitoring</h3>
+            <p>
+              A product priority centered on operational visibility,
+              activity monitoring, and timely performance awareness.
+            </p>
+          </article>
+
+          <article class="feature-card">
+            <div class="feature-icon" aria-hidden="true">▤</div>
+            <h3>Practical reporting</h3>
+            <p>
+              Reporting designed to make operational metrics easier
+              to understand, compare, and act on.
+            </p>
+          </article>
+
+          <article class="feature-card">
+            <div class="feature-icon" aria-hidden="true">⌘</div>
+            <h3>Flexible architecture</h3>
+            <p>
+              An evolving foundation intended to accommodate
+              telephony integrations and changing operational needs.
+            </p>
+          </article>
+
+          <article class="feature-card">
+            <div class="feature-icon" aria-hidden="true">◇</div>
+            <h3>Reliability-minded engineering</h3>
+            <p>
+              Testing, validation, resilience, and operational safety
+              are important parts of the development process.
+            </p>
+          </article>
+
+          <article class="feature-card">
+            <div class="feature-icon" aria-hidden="true">↻</div>
+            <h3>Continuous improvement</h3>
+            <p>
+              An evolving product shaped through development,
+              testing, and practical operational requirements.
+            </p>
+          </article>
+        </div>
       </div>
     </section>
 
-    <section class="content-section container" id="approach">
-      <div class="statement">
-        <div class="eyebrow">Our approach</div>
-        <h2>Useful first. Reliable by design.</h2>
-        <p>
-          NAYVRA is being built as an independent software project. The current
-          focus is active development and testing, with particular attention to
-          reporting, live monitoring, operational clarity, and dependable behavior.
-          This site describes the product direction, not a claim that every
-          capability is already available.
-        </p>
+    <section class="section" id="approach">
+      <div class="container">
+        <div class="section-heading">
+          <span class="eyebrow">Our approach</span>
+          <h2>Useful first. Reliable by design.</h2>
+          <p>
+            NAYVRA is being built with a focus on clear workflows,
+            dependable information, and practical operational needs.
+          </p>
+        </div>
+
+        <div class="approach-grid">
+          <article class="approach-card">
+            <h3>Operational clarity</h3>
+            <p>
+              Make important information easier to find and understand,
+              with interfaces designed around real operational tasks.
+            </p>
+          </article>
+
+          <article class="approach-card">
+            <h3>Data consistency</h3>
+            <p>
+              Treat accurate metrics, validation, and consistent
+              reporting as essential parts of the product.
+            </p>
+          </article>
+
+          <article class="approach-card">
+            <h3>Security and resilience</h3>
+            <p>
+              Build with appropriate access controls, careful handling
+              of data, and reliable operational behavior in mind.
+            </p>
+          </article>
+
+          <article class="approach-card">
+            <h3>Measured development</h3>
+            <p>
+              Develop and test capabilities progressively, clearly
+              distinguishing working functionality from planned features.
+            </p>
+          </article>
+        </div>
       </div>
     </section>
 
-    <section class="content-section container" id="contact">
-      <div class="contact-panel">
-        <div class="eyebrow">Connect with NAYVRA</div>
-        <h2>Follow the development journey.</h2>
-        <p>NAYVRA is currently under development. For project updates, use the public project page below.</p>
-        <a class="text-link" href="https://github.com/satishbiradar127-hue/nayvra-website" target="_blank" rel="noopener noreferrer">Visit the NAYVRA website repository on GitHub ↗</a>
-        <p class="note">A dedicated business email and custom domain have not yet been established.</p>
+    <section class="section" id="contact">
+      <div class="container">
+        <div class="contact-panel">
+          <div>
+            <span class="eyebrow">Connect with NAYVRA</span>
+            <h2>Follow the development journey.</h2>
+            <p>
+              NAYVRA is currently under development. For project updates,
+              use the public repository below. A dedicated business email
+              and custom domain have not yet been established.
+            </p>
+          </div>
+
+          <a
+            class="button button-primary"
+            href="https://github.com/satishbiradar127-hue/nayvra-website"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            Visit GitHub
+          </a>
+        </div>
       </div>
     </section>
   </main>
 
-  <footer>
+  <footer class="site-footer">
     <div class="container footer-inner">
-      <span>© <span id="year">2026</span> NAYVRA. Independent software project.</span>
-      <span>Under active development · Product information may change</span>
+      <a class="footer-brand" href="#home">NAYVRA</a>
+      <span class="footer-copy">
+        Independently developed · Currently in development
+      </span>
+      <span class="footer-copy">
+        © <span id="year">2026</span> NAYVRA
+      </span>
     </div>
   </footer>
+
   <script>
-    document.getElementById("year").textContent = new Date().getFullYear();
+    document.getElementById("year").textContent =
+      new Date().getFullYear();
   </script>
 </body>
 </html>
-```
